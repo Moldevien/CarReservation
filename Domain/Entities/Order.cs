@@ -13,6 +13,6 @@
         public Client Client { get; set; }
         public Car Car { get; set; }
         public OrderStatus Status { get; set; }
-        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+        public List<Payment> Payments { get; set; } = new();
     }
 }

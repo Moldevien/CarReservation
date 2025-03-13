@@ -9,6 +9,6 @@
         public string Email { get; set; } = string.Empty;
 
         public User? User { get; set; }
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public List<Order> Orders { get; set; } = new();
     }
 }

@@ -9,6 +9,6 @@
         public int Year { get; set; }
         public decimal PricePerDay { get; set; }
 
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public List<Order> Orders { get; set; } = new();
     }
 }
