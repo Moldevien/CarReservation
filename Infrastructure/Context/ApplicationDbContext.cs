@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.Configurations;
+using Microsoft.EntityFrameworkCore;
 using TransportRental.Models;
 
 namespace TransportRental.Infrastructure.Data
@@ -16,86 +17,95 @@ namespace TransportRental.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Client)
-                .WithOne(c => c.User)
-                .HasForeignKey<Client>(c => c.UserId);
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Client>()
-                .HasMany(c => c.Orders)
-                .WithOne(o => o.Client)
-                .HasForeignKey(o => o.ClientId);
+            modelBuilder.ApplyConfiguration(new CarConfiguration());
+            modelBuilder.ApplyConfiguration(new ClientConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderStatusOrderStatus());
+            modelBuilder.ApplyConfiguration(new PaymentConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            modelBuilder.Entity<Order>()
-                .HasMany(o => o.Payments)
-                .WithOne(p => p.Order)
-                .HasForeignKey(p => p.OrderId);
+            //modelBuilder.Entity<User>()
+            //    .HasOne(u => u.Client)
+            //    .WithOne(c => c.User)
+            //    .HasForeignKey<Client>(c => c.UserId);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Client)
-                .WithMany(c => c.Orders)
-                .HasForeignKey(o => o.ClientId);
+            //modelBuilder.Entity<Client>()
+            //    .HasMany(c => c.Orders)
+            //    .WithOne(o => o.Client)
+            //    .HasForeignKey(o => o.ClientId);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Car)
-                .WithMany(t => t.Orders)
-                .HasForeignKey(o => o.CarId);
+            //modelBuilder.Entity<Order>()
+            //    .HasMany(o => o.Payments)
+            //    .WithOne(p => p.Order)
+            //    .HasForeignKey(p => p.OrderId);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Status)
-                .WithMany(s => s.Orders)
-                .HasForeignKey(o => o.StatusId);
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(o => o.Client)
+            //    .WithMany(c => c.Orders)
+            //    .HasForeignKey(o => o.ClientId);
 
-            modelBuilder.Entity<Payment>()
-                .HasOne(p => p.Order)
-                .WithMany(o => o.Payments)
-                .HasForeignKey(p => p.OrderId);
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(o => o.Car)
+            //    .WithMany(t => t.Orders)
+            //    .HasForeignKey(o => o.CarId);
 
-            modelBuilder.Entity<Car>()
-                .HasIndex(p => p.Id).IsUnique();
-            modelBuilder.Entity<Car>()
-                .Property(p => p.Brand).IsRequired().HasMaxLength(60);
-            modelBuilder.Entity<Car>()
-                .Property(p => p.Model).IsRequired().HasMaxLength(60);
-            modelBuilder.Entity<Car>()
-                .Property(p => p.Year).IsRequired();
-            modelBuilder.Entity<Car>()
-                .Property(p => p.PricePerDay).IsRequired();
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(o => o.Status)
+            //    .WithMany(s => s.Orders)
+            //    .HasForeignKey(o => o.StatusId);
 
-            modelBuilder.Entity<Client>()
-                .HasIndex(c => c.Id).IsUnique();
-            modelBuilder.Entity<Client>()
-                .Property(c => c.Name).IsRequired().HasMaxLength(60);
-            modelBuilder.Entity<Client>()
-                .Property(c => c.Phone).IsRequired().HasMaxLength(10);
-            modelBuilder.Entity<Client>()
-                .Property(c => c.Email).IsRequired().HasMaxLength(100);
+            //modelBuilder.Entity<Payment>()
+            //    .HasOne(p => p.Order)
+            //    .WithMany(o => o.Payments)
+            //    .HasForeignKey(p => p.OrderId);
 
-            modelBuilder.Entity<Order>()
-                .HasIndex(o => o.Id).IsUnique();
-            modelBuilder.Entity<Order>()
-                .Property(o => o.StartDate).IsRequired();
-            modelBuilder.Entity<Order>()
-                .Property(o => o.EndDate).IsRequired();
+            //modelBuilder.Entity<Car>()
+            //    .HasIndex(p => p.Id).IsUnique();
+            //modelBuilder.Entity<Car>()
+            //    .Property(p => p.Brand).IsRequired().HasMaxLength(60);
+            //modelBuilder.Entity<Car>()
+            //    .Property(p => p.Model).IsRequired().HasMaxLength(60);
+            //modelBuilder.Entity<Car>()
+            //    .Property(p => p.Year).IsRequired();
+            //modelBuilder.Entity<Car>()
+            //    .Property(p => p.PricePerDay).IsRequired();
 
-            modelBuilder.Entity<OrderStatus>()
-                .HasIndex(pt => pt.Id).IsUnique();
-            modelBuilder.Entity<OrderStatus>()
-                .Property(pt => pt.Name).IsRequired().HasMaxLength(30);
+            //modelBuilder.Entity<Client>()
+            //    .HasIndex(c => c.Id).IsUnique();
+            //modelBuilder.Entity<Client>()
+            //    .Property(c => c.Name).IsRequired().HasMaxLength(60);
+            //modelBuilder.Entity<Client>()
+            //    .Property(c => c.Phone).IsRequired().HasMaxLength(10);
+            //modelBuilder.Entity<Client>()
+            //    .Property(c => c.Email).IsRequired().HasMaxLength(100);
 
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Id).IsUnique();
-            modelBuilder.Entity<User>()
-                .Property(u => u.Login).IsRequired().HasMaxLength(20);
-            modelBuilder.Entity<User>()
-                .Property(u => u.Password).IsRequired().HasMaxLength(20);
+            //modelBuilder.Entity<Order>()
+            //    .HasIndex(o => o.Id).IsUnique();
+            //modelBuilder.Entity<Order>()
+            //    .Property(o => o.StartDate).IsRequired();
+            //modelBuilder.Entity<Order>()
+            //    .Property(o => o.EndDate).IsRequired();
 
-            modelBuilder.Entity<Payment>()
-                .HasIndex(p => p.Id).IsUnique();
-            modelBuilder.Entity<Payment>()
-                .Property(p => p.Date).IsRequired();
-            modelBuilder.Entity<Payment>()
-                .Property(p => p.TotalSum).IsRequired();
+            //modelBuilder.Entity<OrderStatus>()
+            //    .HasIndex(pt => pt.Id).IsUnique();
+            //modelBuilder.Entity<OrderStatus>()
+            //    .Property(pt => pt.Name).IsRequired().HasMaxLength(30);
+
+            //modelBuilder.Entity<User>()
+            //    .HasIndex(u => u.Id).IsUnique();
+            //modelBuilder.Entity<User>()
+            //    .Property(u => u.Login).IsRequired().HasMaxLength(20);
+            //modelBuilder.Entity<User>()
+            //    .Property(u => u.Password).IsRequired().HasMaxLength(20);
+
+            //modelBuilder.Entity<Payment>()
+            //    .HasIndex(p => p.Id).IsUnique();
+            //modelBuilder.Entity<Payment>()
+            //    .Property(p => p.Date).IsRequired();
+            //modelBuilder.Entity<Payment>()
+            //    .Property(p => p.TotalSum).IsRequired();
         }
     }
 }
