@@ -8,7 +8,7 @@ namespace Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasOne(u => u.Client)
+            /*builder.HasOne(u => u.Client)
                 .WithOne(c => c.User)
                 .HasForeignKey<Client>(c => c.UserId);
 
@@ -21,7 +21,24 @@ namespace Infrastructure.Configurations
 
             builder.Property(u => u.Password)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(20);*/
+
+            builder.HasKey(u => u.Id);
+
+            builder.HasOne(u => u.Client)
+                .WithOne(c => c.User)
+                .HasForeignKey<Client>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(u => u.Login)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false); // Логін - тільки латинські символи
+
+            builder.Property(u => u.Password)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
         }
     }
 }

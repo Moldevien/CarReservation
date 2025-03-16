@@ -13,6 +13,7 @@ namespace Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            // підключення сервісу який дає можливість працювати з контролерами
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -29,6 +30,8 @@ namespace Web
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            // перевірка процес у якому розробка знаходиться
+            // якщо вибрано не debug то умова буде виконуватись і при помилка користувача буде перекидувати сайт з помилкою
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -36,18 +39,27 @@ namespace Web
                 app.UseHsts();
             }
 
+            // підключення переадресацій
             app.UseHttpsRedirection();
+            // підключення статичних файлів у файлі wwwroot
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
+            // як ми будемо відслідковувати різні url адреса
             app.MapControllerRoute(
                 name: "default",
+                // при запуску буде викликатися контролер Home і метод Index
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+            // як працює показ форм при запуску сайту
+            // подається команда на показання форми, іде в папку views
+            // запускається файл _ViewStart, там указано основний головний файл з шаблоном сайту _Layout
+            // у цьому файлі указано команду в яку епередається посилання на форму яка повинна бути показанна, тобто при запку це Index
         }
     }
 }

@@ -6,7 +6,6 @@
         public string Login { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public bool Access { get; set; } = false;
-
-        public Client? Client { get; set; }
+        public Client Client { get; set; } = null!;
     }
 }

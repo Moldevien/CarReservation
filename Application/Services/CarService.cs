@@ -7,10 +7,7 @@ namespace Application.Services
     {
         private readonly IRepository<Car> _carRepository;
 
-        public CarService(IRepository<Car> carRepository)
-        {
-            _carRepository = carRepository;
-        }
+        public CarService(IRepository<Car> carRepository) => _carRepository = carRepository;
 
         public async Task<IEnumerable<Car>> GetAllCarsAsync() => await _carRepository.GetAllAsync();
 

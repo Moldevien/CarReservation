@@ -6,7 +6,11 @@ namespace TransportRental.Infrastructure.Data
 {
     public  class ApplicationDbContext: DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
+        }
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -17,7 +21,7 @@ namespace TransportRental.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new CarConfiguration());
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
@@ -26,6 +30,7 @@ namespace TransportRental.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
+            /*
             //modelBuilder.Entity<User>()
             //    .HasOne(u => u.Client)
             //    .WithOne(c => c.User)
@@ -105,7 +110,7 @@ namespace TransportRental.Infrastructure.Data
             //modelBuilder.Entity<Payment>()
             //    .Property(p => p.Date).IsRequired();
             //modelBuilder.Entity<Payment>()
-            //    .Property(p => p.TotalSum).IsRequired();
+            //    .Property(p => p.TotalSum).IsRequired();*/
         }
     }
 }

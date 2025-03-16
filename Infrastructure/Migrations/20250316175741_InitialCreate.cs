@@ -20,8 +20,8 @@ namespace Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Brand = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     Model = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    Year = table.Column<int>(type: "integer", nullable: false),
-                    PricePerDay = table.Column<decimal>(type: "numeric", nullable: false)
+                    Year = table.Column<short>(type: "smallint", nullable: false),
+                    PricePerDay = table.Column<decimal>(type: "numeric(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,8 +47,8 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Login = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Password = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Login = table.Column<string>(type: "character varying(20)", unicode: false, maxLength: 20, nullable: false),
+                    Password = table.Column<string>(type: "character varying(20)", unicode: false, maxLength: 20, nullable: false),
                     Access = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -64,7 +64,7 @@ namespace Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    Phone = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    Phone = table.Column<string>(type: "character varying(10)", unicode: false, maxLength: 10, nullable: false),
                     Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -87,7 +87,7 @@ namespace Infrastructure.Migrations
                     ClientId = table.Column<int>(type: "integer", nullable: false),
                     CarId = table.Column<int>(type: "integer", nullable: false),
                     StatusId = table.Column<int>(type: "integer", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -98,13 +98,13 @@ namespace Infrastructure.Migrations
                         column: x => x.CarId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_RentalStatuses_StatusId",
                         column: x => x.StatusId,
@@ -120,8 +120,8 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OrderId = table.Column<int>(type: "integer", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TotalSum = table.Column<decimal>(type: "numeric", nullable: false)
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
+                    TotalSum = table.Column<decimal>(type: "numeric(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,15 +135,9 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cars_Id",
-                table: "Cars",
-                column: "Id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Clients_Id",
+                name: "IX_Clients_Email",
                 table: "Clients",
-                column: "Id",
+                column: "Email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -163,21 +157,9 @@ namespace Infrastructure.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_Id",
-                table: "Orders",
-                column: "Id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_StatusId",
                 table: "Orders",
                 column: "StatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_Id",
-                table: "Payments",
-                column: "Id",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_OrderId",
@@ -187,12 +169,6 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_RentalStatuses_Id",
                 table: "RentalStatuses",
-                column: "Id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Id",
-                table: "Users",
                 column: "Id",
                 unique: true);
         }

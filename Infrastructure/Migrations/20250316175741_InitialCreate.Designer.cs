@@ -12,7 +12,7 @@ using TransportRental.Infrastructure.Data;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250314185522_InitialCreate")]
+    [Migration("20250316175741_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -44,15 +44,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("character varying(60)");
 
                     b.Property<decimal>("PricePerDay")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(10,2)");
 
-                    b.Property<int>("Year")
-                        .HasColumnType("integer");
+                    b.Property<short>("Year")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
 
                     b.ToTable("Cars");
                 });
@@ -78,6 +75,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(10)
+                        .IsUnicode(false)
                         .HasColumnType("character varying(10)");
 
                     b.Property<int>("UserId")
@@ -85,7 +83,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.HasIndex("UserId")
@@ -112,7 +110,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("integer");
@@ -122,9 +122,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CarId");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
 
                     b.HasIndex("StatusId");
 
@@ -161,18 +158,17 @@ namespace Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("TotalSum")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
 
                     b.HasIndex("OrderId");
 
@@ -193,17 +189,16 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(20)
+                        .IsUnicode(false)
                         .HasColumnType("character varying(20)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(20)
+                        .IsUnicode(false)
                         .HasColumnType("character varying(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -224,13 +219,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("TransportRental.Models.Car", "Car")
                         .WithMany("Orders")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TransportRental.Models.Client", "Client")
                         .WithMany("Orders")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TransportRental.Models.OrderStatus", "Status")
@@ -279,7 +274,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("TransportRental.Models.User", b =>
                 {
-                    b.Navigation("Client");
+                    b.Navigation("Client")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

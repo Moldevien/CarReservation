@@ -8,7 +8,7 @@ namespace Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.HasOne(p => p.Order)
+            /*builder.HasOne(p => p.Order)
                 .WithMany(o => o.Payments)
                 .HasForeignKey(p => p.OrderId);
 
@@ -19,7 +19,22 @@ namespace Infrastructure.Configurations
                 .IsRequired();
 
             builder.Property(p => p.TotalSum)
-                .IsRequired();
+                .IsRequired();*/
+
+            builder.HasKey(p => p.Id);
+
+            builder.HasOne(p => p.Order)
+                .WithMany(o => o.Payments)
+                .HasForeignKey(p => p.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(p => p.Date)
+                .IsRequired()
+                .HasDefaultValueSql("NOW()"); // Автоматична дата
+
+            builder.Property(p => p.TotalSum)
+                .IsRequired()
+                .HasColumnType("decimal(10,2)");
         }
     }
 }
