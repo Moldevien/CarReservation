@@ -8,23 +8,6 @@ namespace Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Car> builder)
         {
-            /*builder.HasIndex(p => p.Id)
-                .IsUnique();
-
-            builder.Property(p => p.Brand)
-                .IsRequired()
-                .HasMaxLength(60);
-
-            builder.Property(p => p.Model)
-                .IsRequired()
-                .HasMaxLength(60);
-
-            builder.Property(p => p.Year)
-                .IsRequired();
-
-            builder.Property(p => p.PricePerDay)
-                .IsRequired();*/
-
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Brand)

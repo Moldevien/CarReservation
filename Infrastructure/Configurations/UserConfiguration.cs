@@ -8,21 +8,6 @@ namespace Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            /*builder.HasOne(u => u.Client)
-                .WithOne(c => c.User)
-                .HasForeignKey<Client>(c => c.UserId);
-
-            builder.HasIndex(u => u.Id)
-                .IsUnique();
-
-            builder.Property(u => u.Login)
-                .IsRequired()
-                .HasMaxLength(20);
-
-            builder.Property(u => u.Password)
-                .IsRequired()
-                .HasMaxLength(20);*/
-
             builder.HasKey(u => u.Id);
 
             builder.HasOne(u => u.Client)

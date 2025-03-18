@@ -8,19 +8,6 @@ namespace Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            /*builder.HasOne(p => p.Order)
-                .WithMany(o => o.Payments)
-                .HasForeignKey(p => p.OrderId);
-
-            builder.HasIndex(p => p.Id)
-                .IsUnique();
-
-            builder.Property(p => p.Date)
-                .IsRequired();
-
-            builder.Property(p => p.TotalSum)
-                .IsRequired();*/
-
             builder.HasKey(p => p.Id);
 
             builder.HasOne(p => p.Order)

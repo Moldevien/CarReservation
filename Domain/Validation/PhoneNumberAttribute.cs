@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using System.Text.RegularExpressions;
 
-namespace Web.Validation
+namespace Infrastructure.Validation
 {
     public class PhoneNumberAttribute : ValidationAttribute
     {
@@ -11,7 +12,7 @@ namespace Web.Validation
                 return false;
 
             string phoneNumber = value.ToString()!;
-            return Regex.IsMatch(phoneNumber, @"^\+380\d{9}$"); // Український формат
+            return Regex.IsMatch(phoneNumber, @"^\d{10}$");
         }
     }
 }
