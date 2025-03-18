@@ -16,12 +16,12 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCars() => Ok(await _carService.GetAllCarsAsync());
+        public async Task<IActionResult> GetCars() => Ok(await _carService.GetAllAsync());
 
         [HttpPost]
         public async Task<IActionResult> AddCar(Car car)
         {
-            await _carService.AddCarAsync(car);
+            await _carService.AddAsync(car);
             return CreatedAtAction(nameof(GetCars), new { id = car.Id }, car);
         }
     }

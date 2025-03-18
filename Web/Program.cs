@@ -22,6 +22,8 @@ namespace Web
             // Реєстрація репозиторіїв
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<CarService>();
+            builder.Services.AddScoped<OrderService>();
+            builder.Services.AddScoped<ClientService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

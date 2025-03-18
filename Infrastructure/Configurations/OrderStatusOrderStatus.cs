@@ -4,7 +4,7 @@ using TransportRental.Models;
 
 namespace Infrastructure.Configurations
 {
-    internal class OrderStatusOrderStatus : IEntityTypeConfiguration<OrderStatus>
+    internal class OrderStatusConfiguration : IEntityTypeConfiguration<OrderStatus>
     {
         public void Configure(EntityTypeBuilder<OrderStatus> builder)
         {

@@ -3,9 +3,9 @@ using TransportRental.Models;
 
 namespace Application.Services
 {
-    public class CarService : Service<Car>
+    public class OrderService : Service<Order>
     {
-        public CarService(IRepository<Car> repository) : base(repository)
+        public OrderService(IRepository<Order> repository) : base(repository)
         {
 
         }
