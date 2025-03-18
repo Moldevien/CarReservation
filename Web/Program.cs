@@ -1,8 +1,8 @@
 using Application.Services;
 using Domain.Interfaces;
+using Infrastructure.Context;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using TransportRental.Infrastructure.Data;
 
 namespace Web
 {

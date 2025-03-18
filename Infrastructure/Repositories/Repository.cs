@@ -1,6 +1,6 @@
 ﻿using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using TransportRental.Infrastructure.Data;
+using Infrastructure.Context;
 
 namespace Infrastructure.Repositories
 {

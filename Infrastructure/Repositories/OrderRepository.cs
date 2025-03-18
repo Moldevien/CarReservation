@@ -1,9 +1,9 @@
-﻿using TransportRental.Infrastructure.Data;
-using TransportRental.Models;
+﻿using Domain.Entities;
+using Infrastructure.Context;
 
 namespace Infrastructure.Repositories
 {
-    class OrderRepository : Repository<Order>
+    public class OrderRepository : Repository<Order>
     {
         public OrderRepository(ApplicationDbContext context) : base(context) { }
     }

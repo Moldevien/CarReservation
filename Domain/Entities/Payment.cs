@@ -1,4 +1,4 @@
-﻿namespace TransportRental.Models
+﻿namespace Domain.Entities
 {
     //Платіж
     public class Payment

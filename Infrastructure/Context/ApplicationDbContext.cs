@@ -1,8 +1,8 @@
-﻿using Infrastructure.Configurations;
+﻿using Domain.Entities;
+using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
-using TransportRental.Models;
 
-namespace TransportRental.Infrastructure.Data
+namespace Infrastructure.Context
 {
     public  class ApplicationDbContext: DbContext
     {

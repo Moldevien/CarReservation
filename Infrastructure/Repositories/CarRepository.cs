@@ -1,5 +1,5 @@
-﻿using TransportRental.Infrastructure.Data;
-using TransportRental.Models;
+﻿using Domain.Entities;
+using Infrastructure.Context;
 
 namespace Infrastructure.Repositories
 {

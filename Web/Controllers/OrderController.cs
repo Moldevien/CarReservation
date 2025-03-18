@@ -1,6 +1,6 @@
 ﻿using Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using TransportRental.Models;
+using Web.Models;
 
 namespace Web.Controllers
 {

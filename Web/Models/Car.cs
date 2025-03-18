@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities
+﻿namespace Web.Models
 {
     //Автомобіль
     public class Car
@@ -8,6 +8,5 @@
         public string Model { get; set; } = string.Empty;
         public short Year { get; set; }
         public decimal PricePerDay { get; set; }
-        public List<Order> Orders { get; set; } = new();
     }
 }

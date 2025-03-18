@@ -1,5 +1,5 @@
-﻿using Domain.Interfaces;
-using TransportRental.Models;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 
 namespace Application.Services
 {

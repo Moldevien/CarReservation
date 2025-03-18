@@ -1,4 +1,4 @@
-﻿namespace TransportRental.Models
+﻿namespace Domain.Entities
 {
     //Статус оренди
     public class OrderStatus
