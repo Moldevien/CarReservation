@@ -21,6 +21,11 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddClient(Client client)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Повертає помилки валідації
+            }
+
             await _clientService.AddAsync(client);
             return CreatedAtAction(nameof(GetClient), new { id = client.Id }, client);
         }

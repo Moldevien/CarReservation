@@ -21,6 +21,11 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddOrder(Order order)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Повертає помилки валідації
+            }
+
             await _orderService.AddAsync(order);
             return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
         }
