@@ -143,7 +143,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("RentalStatuses");
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("Domain.Entities.Payment", b =>

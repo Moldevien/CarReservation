@@ -11,12 +11,12 @@ namespace Domain.Entities
         public int CarId { get; set; }
         public int StatusId { get; set; }
 
-        [Required]
-        [ValidDate]
+        [Required(ErrorMessage = "Поле не повинно бути пустим")]
+        [ValidDate(ErrorMessage = "Неправиль уведена дата")]
         public DateTime StartDate { get; set; } = DateTime.Now;
 
-        [Required]
-        [ValidDate]
+        [Required(ErrorMessage = "Поле не повинно бути пустим")]
+        [ValidDate(ErrorMessage = "Неправиль уведена дата")]
         public DateTime EndDate { get; set; }
         public Client Client { get; set; } = null!;
         public Car Car { get; set; } = null!;

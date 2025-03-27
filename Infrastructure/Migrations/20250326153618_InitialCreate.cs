@@ -29,7 +29,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RentalStatuses",
+                name: "OrderStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -38,7 +38,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RentalStatuses", x => x.Id);
+                    table.PrimaryKey("PK_OrderStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,9 +106,9 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Orders_RentalStatuses_StatusId",
+                        name: "FK_Orders_OrderStatuses_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "RentalStatuses",
+                        principalTable: "OrderStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -162,15 +162,15 @@ namespace Infrastructure.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderStatuses_Id",
+                table: "OrderStatuses",
+                column: "Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_OrderId",
                 table: "Payments",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RentalStatuses_Id",
-                table: "RentalStatuses",
-                column: "Id",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -189,7 +189,7 @@ namespace Infrastructure.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "RentalStatuses");
+                name: "OrderStatuses");
 
             migrationBuilder.DropTable(
                 name: "Users");

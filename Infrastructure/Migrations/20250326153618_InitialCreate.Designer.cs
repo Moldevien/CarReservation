@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250318214735_InitialCreate")]
+    [Migration("20250326153618_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -146,7 +146,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.ToTable("RentalStatuses");
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("Domain.Entities.Payment", b =>

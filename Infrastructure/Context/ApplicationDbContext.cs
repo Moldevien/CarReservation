@@ -15,7 +15,7 @@ namespace Infrastructure.Context
         public DbSet<Car> Cars { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderStatus> RentalStatuses { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<User> Users { get; set; }
 
