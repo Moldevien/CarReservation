@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 using System.Text.RegularExpressions;
 
 namespace Infrastructure.Validation
@@ -8,10 +7,13 @@ namespace Infrastructure.Validation
     {
         public override bool IsValid(object? value)
         {
-            if (value == null)
-                return false;
+            string? phoneNumber = value?.ToString();
 
-            string phoneNumber = value.ToString()!;
+            if (string.IsNullOrEmpty(phoneNumber))
+            {
+                return false;
+            }
+
             return Regex.IsMatch(phoneNumber, @"^\d{10}$");
         }
     }

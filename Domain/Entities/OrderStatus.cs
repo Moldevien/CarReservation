@@ -8,7 +8,8 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = null!;
+
         public List<Order> Orders { get; set; } = new();
     }
 }

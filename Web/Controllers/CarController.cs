@@ -10,6 +10,7 @@ namespace Web.Controllers
         public CarController(CarService carService) => _carService = carService;
 
         // Відображення списку автомобілів
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var cars = await _carService.GetAllAsync();
@@ -17,69 +18,64 @@ namespace Web.Controllers
         }
 
         // Форма додавання авто
+        [HttpGet]
         public IActionResult Create() => View();
 
         // Обробка додавання авто
         [HttpPost]
-        public IActionResult Create(Car car)
+        public async Task<IActionResult> Create(Car car)
         {
             if (ModelState.IsValid)
             {
-                _carService.AddAsync(car);
+                await _carService.AddAsync(car);
                 return RedirectToAction("Index");
             }
             return View(car);
         }
 
         // Форма редагування авто
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var car = await _carService.GetByIdAsync(id); // ✅ Чекаємо результат
+            var car = await _carService.GetByIdAsync(id);
             if (car == null)
             {
                 return NotFound();
             }
-            return View(car); // ✅ Передаємо об'єкт Car у View
+            return View(car);
         }
 
         // Обробка редагування
         [HttpPost]
-        public IActionResult Edit(Car car)
+        public async Task<IActionResult> Edit(Car car)
         {
             if (ModelState.IsValid)
             {
-                _carService.UpdateAsync(car);
+                await _carService.UpdateAsync(car);
                 return RedirectToAction("Index");
             }
             return View(car);
         }
 
         // Перегляд деталей
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var car = await _carService.GetByIdAsync(id); // ✅ Чекаємо результат
+            var car = await _carService.GetByIdAsync(id);
             if (car == null)
             {
                 return NotFound();
             }
-            return View(car); // ✅ Передаємо об'єкт Car
+            return View(car);
         }
 
         // Видалення авто
-        public IActionResult Delete(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
-            _carService.DeleteAsync(id);
+            await _carService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetCars() => Ok(await _carService.GetAllAsync());
-
-        [HttpPost]
-        public async Task<IActionResult> AddCar(Car car)
-        {
-            await _carService.AddAsync(car);
-            return CreatedAtAction(nameof(GetCars), new { id = car.Id }, car);
-        }
     }
+
 }

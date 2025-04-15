@@ -51,9 +51,9 @@ namespace Web
             app.UseAuthorization();
 
             // як ми будемо відслідковувати різні url адреса
+            // при запуску буде викликатися контролер Home і метод Index
             app.MapControllerRoute(
                 name: "default",
-                // при запуску буде викликатися контролер Home і метод Index
                 pattern: "{controller=Car}/{action=Index}/{id?}");
 
             app.Run();

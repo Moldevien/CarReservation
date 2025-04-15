@@ -18,6 +18,7 @@ namespace Domain.Entities
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         [ValidDate(ErrorMessage = "Неправиль уведена дата")]
         public DateTime EndDate { get; set; }
+
         public Client Client { get; set; } = null!;
         public Car Car { get; set; } = null!;
         public OrderStatus Status { get; set; } = null!;
