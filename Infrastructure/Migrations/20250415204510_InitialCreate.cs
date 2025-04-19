@@ -20,7 +20,11 @@ namespace Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Brand = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     Model = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    Year = table.Column<short>(type: "smallint", nullable: false),
+                    Gas = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Consumption = table.Column<double>(type: "numeric(10,2)", nullable: false),
+                    Passengers = table.Column<int>(type: "integer", nullable: false),
+                    Volume = table.Column<double>(type: "numeric(10,2)", nullable: false),
+                    Gear_box = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
                     PricePerDay = table.Column<decimal>(type: "numeric(10,2)", nullable: false)
                 },
                 constraints: table =>

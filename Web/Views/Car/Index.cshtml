@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<Domain.Entities.Car>
+@using Microsoft.Extensions.Localization
+
+@inject IStringLocalizer<> Localizer
 
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = Localizer["Title"];
 }
 
-<h1>Index</h1>
+<h1>@Localizer["Title"]</h1>
 
 <p>
 	<a asp-action="Create">Create New</a>
@@ -18,9 +21,21 @@
 			<th>
 				@Html.DisplayNameFor(model => model.Model)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Year)
-			</th>
+			<td>
+				@Html.DisplayNameFor(model => model.Gas)
+			</td>
+			<td>
+				@Html.DisplayNameFor(model => model.Consumption)
+			</td>
+			<td>
+				@Html.DisplayNameFor(model => model.Passengers)
+			</td>
+			<td>
+				@Html.DisplayNameFor(model => model.Volume)
+			</td>
+			<td>
+				@Html.DisplayNameFor(model => model.Gear_box)
+			</td>
 			<th>
 				@Html.DisplayNameFor(model => model.PricePerDay)
 			</th>
@@ -38,7 +53,19 @@
 					@Html.DisplayFor(modelItem => item.Model)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Year)
+					@Html.DisplayFor(modelItem => item.Gas)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Consumption)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Passengers)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Volume)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Gear_box)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.PricePerDay)

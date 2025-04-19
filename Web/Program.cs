@@ -2,7 +2,11 @@ using Application.Services;
 using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 
 namespace Web
 {
@@ -14,7 +18,26 @@ namespace Web
 
             // Add services to the container.
             // підключення сервісу який дає можливість працювати з контролерами
-            builder.Services.AddControllersWithViews();
+            builder.Services
+                .AddLocalization()
+                .AddControllersWithViews()
+                .AddDataAnnotationsLocalization();
+
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                List<CultureInfo> locales = new List<CultureInfo>()
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("uk-UA")
+            };
+
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = locales;
+                options.SupportedUICultures = locales;
+
+                var requestProvider = new RouteDataRequestCultureProvider();
+                options.RequestCultureProviders.Insert(0, requestProvider);
+            });
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -48,13 +71,15 @@ namespace Web
 
             app.UseRouting();
 
+            app.UseRequestLocalization(app.Services.GetService<IOptions<RequestLocalizationOptions>>().Value);
+
             app.UseAuthorization();
 
             // як ми будемо відслідковувати різні url адреса
             // при запуску буде викликатися контролер Home і метод Index
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Car}/{action=Index}/{id?}");
+                pattern: "{culture=en-US}/{controller=Car}/{action=Index}/{id?}");
 
             app.Run();
 

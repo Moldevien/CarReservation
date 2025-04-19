@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250326153618_InitialCreate")]
+    [Migration("20250415204510_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -38,16 +38,32 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("character varying(60)");
 
+                    b.Property<double>("Consumption")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Gas")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Gear_box")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("character varying(60)");
 
+                    b.Property<int>("Passengers")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<short>("Year")
-                        .HasColumnType("smallint");
+                    b.Property<double>("Volume")
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
 

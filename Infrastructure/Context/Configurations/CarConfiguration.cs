@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Configurations
+namespace Infrastructure.Context.Configurations
 {
     internal class CarConfiguration : IEntityTypeConfiguration<Car>
     {
@@ -18,9 +18,24 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(60);
 
-            builder.Property(p => p.Year)
+            builder.Property(p => p.Gas)
                 .IsRequired()
-                .HasColumnType("smallint"); // Оптимізація для зберігання року
+                .HasMaxLength(30);
+
+            builder.Property(p => p.Consumption)
+                .IsRequired()
+                .HasColumnType("decimal(10,2)");
+
+            builder.Property(p => p.Passengers)
+                .IsRequired();
+
+            builder.Property(p => p.Volume)
+                .IsRequired()
+                .HasColumnType("decimal(10,2)");
+
+            builder.Property(p => p.Gear_box)
+                .IsRequired()
+                .HasMaxLength(60);
 
             builder.Property(p => p.PricePerDay)
                 .IsRequired()
