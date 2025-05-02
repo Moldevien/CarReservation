@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.Extensions.Localization;
-//using Domain.
 
 namespace Domain.Entities
 {
@@ -19,11 +17,11 @@ namespace Domain.Entities
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public string Model { get; set; } = null!;
 
-        [Display(Name = "Type of gas")]
+        [Display(Name = "Gas")]
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public string Gas { get; set; } = null!;
 
-        [Display(Name = "Gas consumption")]
+        [Display(Name = "Consumption")]
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public double Consumption { get; set; }
 
@@ -31,15 +29,15 @@ namespace Domain.Entities
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public int Passengers { get; set; }
 
-        [Display(Name = "Engine volume")]
+        [Display(Name = "Volume")]
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public double Volume { get; set; }
 
-        [Display(Name = "Gear box")]
+        [Display(Name = "Gear_box")]
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public string Gear_box { get; set; } = null!;
 
-        [Display(Name = "Price per day")]
+        [Display(Name = "PricePerDay")]
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public decimal PricePerDay { get; set; }
 

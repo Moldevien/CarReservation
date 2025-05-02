@@ -1,10 +1,13 @@
 using Application.Services;
+using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 
@@ -19,28 +22,43 @@ namespace Web
             // Add services to the container.
             // підключення сервісу який дає можливість працювати з контролерами
             builder.Services
-                .AddLocalization()
+                .AddLocalization(options => options.ResourcesPath = "Resources")
                 .AddControllersWithViews()
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization()
+                .AddViewLocalization();
 
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
-                List<CultureInfo> locales = new List<CultureInfo>()
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("uk-UA")
-            };
+                /*List<CultureInfo> locales = new List<CultureInfo>()
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("uk-UA")
+                };
 
                 options.DefaultRequestCulture = new RequestCulture("en-US");
                 options.SupportedCultures = locales;
-                options.SupportedUICultures = locales;
+                options.SupportedUICultures = locales;*/
 
-                var requestProvider = new RouteDataRequestCultureProvider();
-                options.RequestCultureProviders.Insert(0, requestProvider);
+                var locales = new[] { "en-US", "uk-UA" };
+
+                options.SetDefaultCulture("en-US")
+                    .AddSupportedCultures(locales)
+                    .AddSupportedUICultures(locales);
+
+                options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider());
             });
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddDefaultIdentity<IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.SignIn.RequireConfirmedAccount = true;
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Реєстрація репозиторіїв
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -54,9 +72,10 @@ namespace Web
 
             var app = builder.Build();
 
+            /* 
             // Configure the HTTP request pipeline.
             // перевірка процес у якому розробка знаходиться
-            // якщо вибрано не debug то умова буде виконуватись і при помилка користувача буде перекидувати сайт з помилкою
+            // якщо вибрано не debug то умова буде виконуватись і при помилка користувача буде перекидувати сайт з помилкою*/
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -71,8 +90,9 @@ namespace Web
 
             app.UseRouting();
 
-            app.UseRequestLocalization(app.Services.GetService<IOptions<RequestLocalizationOptions>>().Value);
+            app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // як ми будемо відслідковувати різні url адреса
@@ -80,13 +100,15 @@ namespace Web
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{culture=en-US}/{controller=Car}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.Run();
 
+            /*
             // як працює показ форм при запуску сайту
             // подається команда на показання форми, іде в папку views
             // запускається файл _ViewStart, там указано основний головний файл з шаблоном сайту _Layout
-            // у цьому файлі указано команду в яку епередається посилання на форму яка повинна бути показанна, тобто при запку це Index
+            // у цьому файлі указано команду в яку епередається посилання на форму яка повинна бути показанна, тобто при запку це Index*/
         }
     }
 }

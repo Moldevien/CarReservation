@@ -121,10 +121,10 @@
     <value>Brand</value>
   </data>
   <data name="Consumption" xml:space="preserve">
-    <value>Fuel consumption</value>
+    <value>Gas consumption</value>
   </data>
   <data name="Gas" xml:space="preserve">
-    <value>Fuel type</value>
+    <value>Type of gas</value>
   </data>
   <data name="Gear_box" xml:space="preserve">
     <value>Transmission type</value>
@@ -139,6 +139,6 @@
     <value>Price per day</value>
   </data>
   <data name="Volume" xml:space="preserve">
-    <value>Engine capacity</value>
+    <value>Engine volume</value>
   </data>
 </root>

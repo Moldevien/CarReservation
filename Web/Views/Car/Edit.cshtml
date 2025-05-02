@@ -1,7 +1,9 @@
-﻿@model Domain.Entities.Car
-@using Microsoft.Extensions.Localization
+﻿@* @model Web.Models.DTO.CarDto *@
+@model Domain.Entities.Car
 
-@inject IStringLocalizer<> Localizer
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
 
 @{
 	ViewData["Title"] = Localizer["Title"];

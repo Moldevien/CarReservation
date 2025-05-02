@@ -45,17 +45,21 @@
 		</div>
 	</footer> *@
 
-	@* <footer>
+	<footer class="border-top footer text-muted">
 		<div>
 			@{
-				var routeData = ViewContext.RouteData.Values;
-				var controller = routeData["controller"]?.ToString();
-				var action = routeData["action"]?.ToString();
+				var routeValues = ViewContext.RouteData.Values;
+				var controller = routeValues["controller"]?.ToString();
+				var action = routeValues["action"]?.ToString();
+				var id = routeValues["id"]?.ToString();
 			}
-			<a href="/en-US/@controller/@action">English</a>
-			<a href="/uk-UA/@controller/@action">Українська</a>
+
+			<div>
+				<a href="/en-US/@controller/@action@(id != null ? $"/{id}" : "")">English</a>
+				<a href="/uk-UA/@controller/@action@(id != null ? $"/{id}" : "")">Українська</a>
+			</div>
 		</div>
-	</footer> *@
+	</footer>
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
