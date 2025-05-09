@@ -1,15 +1,10 @@
 using Application.Services;
-using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Globalization;
 
 namespace Web
 {
@@ -51,15 +46,6 @@ namespace Web
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddDefaultIdentity<IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.SignIn.RequireConfirmedAccount = true;
-            })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
             // Реєстрація репозиторіїв
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<CarService>();
@@ -68,7 +54,6 @@ namespace Web
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -79,7 +64,6 @@ namespace Web
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -93,19 +77,17 @@ namespace Web
             app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseAuthentication();
-            app.UseAuthorization();
 
             // як ми будемо відслідковувати різні url адреса
             // при запуску буде викликатися контролер Home і метод Index
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{culture=en-US}/{controller=Car}/{action=Index}/{id?}");
-            app.MapRazorPages();
 
             app.Run();
 
             /*
-            // як працює показ форм при запуску сайту
+            // як працює показ форм при запуску сайту:
             // подається команда на показання форми, іде в папку views
             // запускається файл _ViewStart, там указано основний головний файл з шаблоном сайту _Layout
             // у цьому файлі указано команду в яку епередається посилання на форму яка повинна бути показанна, тобто при запку це Index*/

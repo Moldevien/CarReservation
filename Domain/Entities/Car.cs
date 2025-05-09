@@ -9,8 +9,6 @@ namespace Domain.Entities
 
         [Display(Name = "Brand")]
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
-        //[Display(Name = "", ResourceType = typeof())]
-        //[Required(ErrorMessageResourceName = "RequiredField", ErrorMessageResourceType = typeof(CarModel))]
         public string Brand { get; set; } = null!;
 
         [Display(Name = "Model")]
