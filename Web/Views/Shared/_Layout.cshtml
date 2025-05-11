@@ -8,42 +8,49 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/Web.styles.css" asp-append-version="true" />
 </head>
+
 <body>
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
-				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web</a>
+				<a class="navbar-brand" asp-area="" asp-controller="Car" asp-action="Index">Web</a>
+				
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
+
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-						</li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Index">Car</a>
 						</li>
 					</ul>
 				</div>
+
+				<div>
+					@if (User.Identity?.IsAuthenticated ?? false)
+					{
+						<span>@User.Identity.Name</span>
+						<form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+							<button type="submit" class="btn btn-link">Вийти</button>
+						</form>
+					}
+					else
+					{
+						<a class="text-dark" asp-area="" asp-controller="Account" asp-action="Login">Увійти</a>
+						<a class="text-dark" asp-area="" asp-controller="Account" asp-action="Register"> Реєстрація </a>
+					}
+				</div>
 			</div>
 		</nav>
 	</header>
+
 	<div class="container">
 		<main role="main" class="pb-3">
 			@RenderBody()
 		</main>
 	</div>
-
-	@* <footer class="border-top footer text-muted">
-		<div class="container">
-			&copy; 2025 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-		</div>
-	</footer> *@
 
 	<footer class="border-top footer text-muted">
 		<div>
@@ -55,8 +62,8 @@
 			}
 
 			<div>
-				<a href="/en-US/@controller/@action@(id != null ? $"/{id}" : "")">English</a>
-				<a href="/uk-UA/@controller/@action@(id != null ? $"/{id}" : "")">Українська</a>
+				<a class="text-dark" href="/en-US/@controller/@action@(id != null ? $"/{id}" : "")"> English </a>
+				<a class="text-dark" href="/uk-UA/@controller/@action@(id != null ? $"/{id}" : "")">Українська</a>
 			</div>
 		</div>
 	</footer>

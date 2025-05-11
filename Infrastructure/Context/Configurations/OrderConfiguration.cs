@@ -14,9 +14,9 @@ namespace Infrastructure.Context.Configurations
                 .WithOne(p => p.Order)
                 .HasForeignKey(p => p.OrderId);
 
-            builder.HasOne(o => o.Client)
+            builder.HasOne(o => o.User)
                 .WithMany(c => c.Orders)
-                .HasForeignKey(o => o.ClientId)
+                .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(o => o.Car)

@@ -10,12 +10,13 @@ namespace Infrastructure.Context.Configurations
         {
             builder.HasKey(u => u.Id);
 
-            builder.HasOne(u => u.Client)
-                .WithOne(c => c.User)
-                .HasForeignKey<Client>(c => c.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Вказати, що в користувача може бути багато замовлень
+            builder.HasMany(u => u.Orders)
+                .WithOne(o => o.User)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(u => u.Login)
+            /*builder.Property(u => u.Login)
                     .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false); // Логін - тільки латинські символи
@@ -23,7 +24,7 @@ namespace Infrastructure.Context.Configurations
             builder.Property(u => u.Password)
                     .IsRequired()
                     .HasMaxLength(20)
-                    .IsUnicode(false);
+                    .IsUnicode(false);*/
         }
     }
 }

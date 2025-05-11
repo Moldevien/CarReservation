@@ -7,7 +7,7 @@ namespace Domain.Entities
     public class Order
     {
         public int Id { get; set; }
-        public int ClientId { get; set; }
+        public string UserId { get; set; } = null!;
         public int CarId { get; set; }
         public int StatusId { get; set; }
 
@@ -19,7 +19,7 @@ namespace Domain.Entities
         [ValidDate(ErrorMessage = "Неправиль уведена дата")]
         public DateTime EndDate { get; set; }
 
-        public Client Client { get; set; } = null!;
+        public User User { get; set; } = null!;
         public Car Car { get; set; } = null!;
         public OrderStatus Status { get; set; } = null!;
         public List<Payment> Payments { get; set; } = new();
