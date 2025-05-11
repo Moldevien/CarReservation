@@ -17,7 +17,7 @@ namespace Web.Controllers
             _signInManager = signInManager;
         }
 
-        // ------------------- Register -------------------
+        #region Реєстрація
         [HttpGet]
         public IActionResult Register() => View();
 
@@ -42,8 +42,9 @@ namespace Web.Controllers
 
             return View(model);
         }
+        #endregion
 
-        // ------------------- Login -------------------
+        #region Логін
         [HttpGet]
         public IActionResult Login() => View();
 
@@ -62,16 +63,18 @@ namespace Web.Controllers
 
             return View(model);
         }
+        #endregion
 
-        // ------------------- Logout -------------------
+        #region Вихід
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+        #endregion
 
-        // ------------------- Edit Profile -------------------
+        #region Редагування профіля
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> EditProfile()
@@ -105,8 +108,9 @@ namespace Web.Controllers
 
             return View(model);
         }
+        #endregion
 
-        // ------------------- Change Password -------------------
+        #region Зміна пароля
         [Authorize]
         [HttpGet]
         public IActionResult ChangePassword() => View();
@@ -129,7 +133,9 @@ namespace Web.Controllers
 
             return View(model);
         }
-        // ------------------ Forgot Password ------------------
+        #endregion
+
+        #region Забув пароль
         [HttpGet]
         public IActionResult ForgotPassword() => View();
 
@@ -156,8 +162,9 @@ namespace Web.Controllers
         }
 
         public IActionResult ForgotPasswordConfirmation() => View();
+        #endregion
 
-        // ------------------ Reset Password ------------------
+        #region Відновити пароль
         [HttpGet]
         public IActionResult ResetPassword(string token, string email)
         {
@@ -184,5 +191,6 @@ namespace Web.Controllers
         }
 
         public IActionResult ResetPasswordConfirmation() => View();
+        #endregion
     }
 }

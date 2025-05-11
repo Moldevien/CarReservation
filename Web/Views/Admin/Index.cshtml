@@ -1,0 +1,29 @@
+﻿@model List<Domain.Entities.User>
+<h2>Користувачі</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ім’я користувача</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-primary">Редагувати</a>
+                    <form asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger">Видалити</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
