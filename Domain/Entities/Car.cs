@@ -39,6 +39,9 @@ namespace Domain.Entities
         [Required(ErrorMessage = "Поле не повинно бути пустим")]
         public decimal PricePerDay { get; set; }
 
+        [Display(Name = "IsAvailable")]
+        public bool IsAvailable { get; set; } = true;
+
         public List<Order> Orders { get; set; } = new();
     }
 }

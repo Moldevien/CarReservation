@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
@@ -9,14 +10,18 @@ namespace Web.Controllers
         private readonly CarService _carService;
         public CarController(CarService carService) => _carService = carService;
 
+        #region Список
         // Відображення списку автомобілів
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var cars = await _carService.GetAllAsync();
             return View(cars);
         }
+        #endregion
 
+        #region Додавання
         // Форма додавання авто
         [HttpGet]
         public IActionResult Create() => View();
@@ -32,7 +37,9 @@ namespace Web.Controllers
             }
             return View(car);
         }
+        #endregion
 
+        #region Редагування
         // Форма редагування авто
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -56,8 +63,9 @@ namespace Web.Controllers
             }
             return View(car);
         }
+        #endregion
 
-        // Перегляд деталей
+        #region Деталі
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -68,14 +76,15 @@ namespace Web.Controllers
             }
             return View(car);
         }
+        #endregion
 
-        // Видалення авто
+        #region Видалення
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             await _carService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+        #endregion
     }
-
 }

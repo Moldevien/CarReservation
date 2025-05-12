@@ -1,5 +1,4 @@
-﻿@* @model Web.Models.DTO.CarDto *@
-@model Domain.Entities.Car
+﻿@model Domain.Entities.Car
 
 @using Microsoft.AspNetCore.Mvc.Localization
 
@@ -66,7 +65,7 @@
 </div>
 
 <div>
-	<a asp-action="Index">Back to List</a>
+	<a asp-action="Index">@Localizer["Back"]</a>
 </div>
 
 @section Scripts {

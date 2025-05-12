@@ -64,7 +64,8 @@ namespace Infrastructure.Migrations
                     Passengers = table.Column<int>(type: "integer", nullable: false),
                     Volume = table.Column<double>(type: "numeric(10,2)", nullable: false),
                     Gear_box = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    PricePerDay = table.Column<decimal>(type: "numeric(10,2)", nullable: false)
+                    PricePerDay = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {

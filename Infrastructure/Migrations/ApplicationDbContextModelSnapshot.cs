@@ -48,6 +48,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("character varying(60)");
 
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasMaxLength(60)

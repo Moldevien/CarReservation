@@ -1,5 +1,4 @@
-﻿@* @model IEnumerable<Web.Models.DTO.CarDto> *@
-@model IEnumerable<Domain.Entities.Car>
+﻿@model IEnumerable<Domain.Entities.Car>
 
 @using Microsoft.AspNetCore.Mvc.Localization
 
@@ -12,35 +11,26 @@
 <h1>@Localizer["Title"]</h1>
 
 <p>
-	<a asp-action="Create">@Localizer["Create new"]</a>
+	@if (User.IsInRole("Admin"))
+	{
+		<a asp-action="Create">@Localizer["Create new"]</a>
+	}
 </p>
 <table class="table">
 	<thead>
 		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Brand)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Model)
-			</th>
-			<td>
-				@Html.DisplayNameFor(model => model.Gas)
-			</td>
-			<td>
-				@Html.DisplayNameFor(model => model.Consumption)
-			</td>
-			<td>
-				@Html.DisplayNameFor(model => model.Passengers)
-			</td>
-			<td>
-				@Html.DisplayNameFor(model => model.Volume)
-			</td>
-			<td>
-				@Html.DisplayNameFor(model => model.Gear_box)
-			</td>
-			<th>
-				@Html.DisplayNameFor(model => model.PricePerDay)
-			</th>
+			<th>@Html.DisplayNameFor(model => model.Brand)</th>
+			<th>@Html.DisplayNameFor(model => model.Model)</th>
+			<td>@Html.DisplayNameFor(model => model.Gas)</td>
+			<td>@Html.DisplayNameFor(model => model.Consumption)</td>
+			<td>@Html.DisplayNameFor(model => model.Passengers)</td>
+			<td>@Html.DisplayNameFor(model => model.Volume)</td>
+			<td>@Html.DisplayNameFor(model => model.Gear_box)</td>
+			<th>@Html.DisplayNameFor(model => model.PricePerDay)</th>
+			@if (User.IsInRole("Admin"))
+			{
+				<th>@Html.DisplayNameFor(model => model.IsAvailable)</th>
+			}
 			<th></th>
 		</tr>
 	</thead>
@@ -48,37 +38,29 @@
 		@foreach (var item in Model)
 		{
 			<tr>
+				<td>@Html.DisplayFor(modelItem => item.Brand)</td>
+				<td>@Html.DisplayFor(modelItem => item.Model)</td>
+				<td>@Html.DisplayFor(modelItem => item.Gas)</td>
+				<td>@Html.DisplayFor(modelItem => item.Consumption)</td>
+				<td>@Html.DisplayFor(modelItem => item.Passengers)</td>
+				<td>@Html.DisplayFor(modelItem => item.Volume)</td>
+				<td>@Html.DisplayFor(modelItem => item.Gear_box)</td>
+				<td>@Html.DisplayFor(modelItem => item.PricePerDay)</td>
+				@if (User.IsInRole("Admin"))
+				{
+					<td>@(item.IsAvailable ? "Доступний" : "Недоступний")</td>
+				}
 				<td>
-					@Html.DisplayFor(modelItem => item.Brand)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Model)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Gas)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Consumption)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Passengers)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Volume)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Gear_box)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.PricePerDay)
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+					@if (User.IsInRole("Admin"))
+					{
+						<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+						<form asp-action="Delete" method="post" style="display:inline;">
+							<input type="hidden" name="id" value="@item.Id" />
+							<button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
+						</form>
+					}
+
 					<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">@Localizer["Details"]</a>
-					<form asp-action="Delete" method="post" style="display:inline;">
-						<input type="hidden" name="id" value="@item.Id" />
-						<button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
-					</form>
 				</td>
 			</tr>
 		}
