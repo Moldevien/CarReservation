@@ -57,6 +57,7 @@ namespace Web
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<CarService>();
+            builder.Services.AddScoped<OrderService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

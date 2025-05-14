@@ -1,15 +1,26 @@
 ﻿using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models.Car;
+using Web.Models.Order;
 
 namespace Web.Controllers
 {
     public class CarController : Controller
     {
         private readonly CarService _carService;
-        public CarController(CarService carService) => _carService = carService;
+        private readonly UserManager<User> _userManager;
+        private readonly OrderService _orderService;
+
+        public CarController(CarService carService, UserManager<User> userManager, OrderService orderService)
+        {
+            _carService = carService;
+            _userManager = userManager;
+            _orderService = orderService;
+        }
+
 
         #region Список з фільтрацією
         // Відображення списку автомобілів
@@ -80,15 +91,56 @@ namespace Web.Controllers
         #endregion
 
         #region Деталі
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var car = await _carService.GetByIdAsync(id);
-            if (car == null)
+            if (car == null) return NotFound();
+
+            var model = new BookingViewModel
             {
-                return NotFound();
+                CarId = car.Id,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(1)
+            };
+
+            ViewBag.Car = car;
+            return View(model);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public async Task<IActionResult> Details(BookingViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Car = await _carService.GetByIdAsync(model.CarId);
+                return View(model);
             }
-            return View(car);
+
+            if (model.EndDate <= model.StartDate)
+            {
+                ModelState.AddModelError("", "Дата завершення має бути після дати початку.");
+                ViewBag.Car = await _carService.GetByIdAsync(model.CarId);
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            var order = new Order
+            {
+                CarId = model.CarId,
+                UserId = user.Id,
+                StartDate = DateTime.SpecifyKind(model.StartDate, DateTimeKind.Utc),
+                EndDate = DateTime.SpecifyKind(model.EndDate, DateTimeKind.Utc),
+                StatusId = 1
+            };
+
+            await _orderService.AddAsync(order);
+
+            TempData["Success"] = "Запит на бронювання відправлено!";
+            return RedirectToAction("Index", "Car");
         }
         #endregion
 

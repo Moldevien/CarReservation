@@ -1,4 +1,12 @@
-﻿@model Domain.Entities.Car
+﻿@model Web.Models.Order.BookingViewModel
+@{
+    var car = ViewBag.Car as Domain.Entities.Car;
+    if (car == null)
+    {
+        <div class="alert alert-danger">Автомобіль не знайдено.</div>
+        return;
+    }
+}
 
 @using Microsoft.AspNetCore.Mvc.Localization
 
@@ -11,60 +19,39 @@
 <h1>@Localizer["Title"]</h1>
 
 <div>
-    <h4>Car</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Model)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gas)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gas)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Consumption)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Consumption)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Passengers)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Passengers)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Volume)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Volume)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Gear_box)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Gear_box)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PricePerDay)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PricePerDay)
-        </dd>
-    </dl>
+    <h2>@car.Brand @car.Model</h2>
+
+    <p><strong>Ціна за день:</strong> @car.PricePerDay грн</p>
+    <p><strong>Пасажири:</strong> @car.Passengers</p>
+    <p><strong>Паливо:</strong> @car.Gas</p>
+    <p><strong>Коробка:</strong> @car.Gear_box</p>
+
+    @if (User.IsInRole("User"))
+    {
+        <form asp-action="Details" method="post" class="mt-4">
+            <input type="hidden" asp-for="CarId" />
+
+            <div class="form-group">
+                <label asp-for="StartDate"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EndDate"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-2">Забронювати</button>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">Щоб забронювати авто, будь ласка, <a asp-controller="Account" asp-action="Login">увійдіть</a>.</div>
+    }
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">@Localizer["Edit"]</a> |
+    <a asp-action="Edit" asp-route-id="@car?.Id">@Localizer["Edit"]</a> |
     <a asp-action="Index">@Localizer["Back"]</a>
 </div>
