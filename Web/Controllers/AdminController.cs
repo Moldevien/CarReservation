@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Services;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,23 +10,26 @@ namespace Web.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
+        private readonly OrderService _orderService;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public AdminController(OrderService orderService, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _orderService = orderService;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        // 🔍 Перелік користувачів
+        #region Перелік
         public IActionResult Index()
         {
             var users = _userManager.Users.ToList();
             return View(users);
         }
+        #endregion
 
-        // ⚙️ Редагування користувача
+        #region Редагування
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
@@ -72,8 +76,9 @@ namespace Web.Controllers
 
             return RedirectToAction("Index");
         }
+        #endregion
 
-        // 🗑 Видалення користувача
+        #region Видалення
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -83,5 +88,42 @@ namespace Web.Controllers
             await _userManager.DeleteAsync(user);
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region Перелік усіх замовлень
+        public async Task<IActionResult> Orders()
+        {
+            var orders = await _orderService.GetAllWithCarAndUserAsync();
+            return View(orders);
+        }
+        #endregion
+
+        #region Підтвердження замовлення
+        [HttpPost]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var order = await _orderService.GetByIdAsync(id);
+            if (order != null)
+            {
+                order.StatusId = 2; // Підтверджено
+                await _orderService.UpdateAsync(order);
+            }
+            return RedirectToAction("Orders");
+        }
+        #endregion
+
+        #region Відхилення замовлення
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id)
+        {
+            var order = await _orderService.GetByIdAsync(id);
+            if (order != null)
+            {
+                order.StatusId = 3; // Відхилено
+                await _orderService.UpdateAsync(order);
+            }
+            return RedirectToAction("Orders");
+        }
+        #endregion
     }
 }

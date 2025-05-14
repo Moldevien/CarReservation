@@ -41,9 +41,6 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public IQueryable<T> Query()
-        {
-            return _context.Set<T>().AsQueryable();
-        }
+        public IQueryable<T> Query() => _context.Set<T>().AsQueryable();
     }
 }

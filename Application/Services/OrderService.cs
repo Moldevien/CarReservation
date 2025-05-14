@@ -17,5 +17,16 @@ namespace Application.Services
                 .OrderByDescending(o => o.StartDate)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Order>> GetAllWithCarAndUserAsync()
+        {
+            return await _Repository.Query()
+                .Include(o => o.Car)
+                .Include(o => o.Status)
+                .Include(o => o.User)
+                .OrderByDescending(o => o.StartDate)
+                .ToListAsync();
+        }
+
     }
 }

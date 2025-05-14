@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Domain.Entities.Order>
+@{
+    ViewData["Title"] = "Усі замовлення";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Користувач</th>
+            <th>Авто</th>
+            <th>Період</th>
+            <th>Статус</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.User.Email</td>
+                <td>@order.Car.Brand @order.Car.Model</td>
+                <td>@order.StartDate:dd.MM.yyyy - @order.EndDate:dd.MM.yyyy</td>
+                <td>@order.Status.Name</td>
+                <td>
+                    @if (order.StatusId == 1) // Очікує
+                    {
+                        <form asp-action="Approve" asp-controller="Admin" asp-route-id="@order.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-success btn-sm">✅ Підтвердити</button>
+                        </form>
+                        <form asp-action="Reject" asp-controller="Admin" asp-route-id="@order.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm">❌ Відхилити</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Без дій</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

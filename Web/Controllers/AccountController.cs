@@ -33,7 +33,7 @@ namespace Web.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "User");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Car");
                 }
 
                 foreach (var error in result.Errors)
@@ -44,7 +44,7 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region Логін
+        #region Авторизація
         [HttpGet]
         public IActionResult Login() => View();
 
@@ -56,7 +56,7 @@ namespace Web.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Car");
 
                 ModelState.AddModelError("", "Невірний логін або пароль");
             }
@@ -70,7 +70,7 @@ namespace Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Car");
         }
         #endregion
 
@@ -101,7 +101,7 @@ namespace Web.Controllers
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Car");
 
             foreach (var error in result.Errors)
                 ModelState.AddModelError("", error.Description);
@@ -126,7 +126,7 @@ namespace Web.Controllers
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Car");
 
             foreach (var error in result.Errors)
                 ModelState.AddModelError("", error.Description);
