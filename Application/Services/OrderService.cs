@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -7,7 +8,14 @@ namespace Application.Services
     {
         public OrderService(IRepository<Order> repository) : base(repository) { }
 
-        // додаткові методи за потреби
+        public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId)
+        {
+            return await _Repository.Query()
+                .Include(o => o.Car)
+                .Include(o => o.Status)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.StartDate)
+                .ToListAsync();
+        }
     }
-
 }

@@ -127,6 +127,10 @@ namespace Web.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Forbid(); // або RedirectToAction("Login", "Account");
+            }
 
             var order = new Order
             {

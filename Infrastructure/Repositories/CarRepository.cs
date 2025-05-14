@@ -68,5 +68,10 @@ namespace Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public IQueryable<Car> Query()
+        {
+            return _context.Set<Car>().AsQueryable();
+        }
     }
 }

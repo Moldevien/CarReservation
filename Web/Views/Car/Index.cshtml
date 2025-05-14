@@ -17,6 +17,12 @@
 	}
 </p>
 
+@if (TempData["Success"] != null)
+{
+	<div class="alert alert-success">@TempData["Success"]</div>
+}
+
+
 <form method="get" class="mb-4">
 	<div class="row">
 		<div class="col-md-2"><input name="Brand" class="form-control" placeholder="Марка" value="@Context.Request.Query["Brand"]" /></div>
