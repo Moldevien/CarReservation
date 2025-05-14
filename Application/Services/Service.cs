@@ -4,7 +4,7 @@ namespace Application.Services
 {
     public class Service<T> : IService<T> where T : class
     {
-        private readonly IRepository<T> _Repository;
+        public readonly IRepository<T> _Repository;
 
         public Service(IRepository<T> Repository) => _Repository = Repository;
 

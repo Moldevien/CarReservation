@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.Models.Car;
 
 namespace Web.Controllers
 {
@@ -10,13 +11,26 @@ namespace Web.Controllers
         private readonly CarService _carService;
         public CarController(CarService carService) => _carService = carService;
 
-        #region Список
+        #region Список з фільтрацією
         // Відображення списку автомобілів
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] CarFilterViewModel filterVm)
         {
-            var cars = await _carService.GetAllAsync();
+            var filter = new CarFilter
+            {
+                Brand = filterVm.Brand,
+                Model = filterVm.Model,
+                MinPrice = filterVm.MinPrice,
+                MaxPrice = filterVm.MaxPrice,
+                Gas = filterVm.Gas,
+                Passengers = filterVm.Passengers,
+                Volume = filterVm.Volume,
+                Gear_box = filterVm.Gear_box
+            };
+
+            var cars = await _carService.GetFilteredCarsAsync(filter, User);
+            ViewBag.Filter = filterVm;
             return View(cars);
         }
         #endregion
@@ -85,6 +99,28 @@ namespace Web.Controllers
             await _carService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region Фільтрування
+        /*[AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Filter(CarFilterViewModel model)
+        {
+            var filter = new CarFilter
+            {
+                Brand = model.Brand,
+                Model = model.Model,
+                MinPrice = model.MinPrice,
+                MaxPrice = model.MaxPrice,
+                Gas = model.Gas,
+                Passengers = model.Passengers,
+                Volume = model.Volume,
+                Gear_box = model.Gear_box
+            };
+
+            var cars = await _carService.GetFilteredCarsAsync(filter, User);
+            return View("Index", cars);
+        }*/
         #endregion
     }
 }
