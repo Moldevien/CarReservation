@@ -178,5 +178,24 @@ namespace Web.Controllers
             return View("Index", cars);
         }*/
         #endregion
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> ToggleAvailability(int id)
+        {
+            var car = await _carService.GetByIdAsync(id);
+            if (car == null)
+                return NotFound();
+
+            car.IsAvailable = !car.IsAvailable;
+            await _carService.UpdateAsync(car);
+
+            TempData["Success"] = car.IsAvailable
+                ? "Автомобіль тепер доступний для користувачів."
+                : "Автомобіль зроблено недоступним.";
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

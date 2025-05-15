@@ -73,8 +73,15 @@
 				<td>@Html.DisplayFor(modelItem => item.PricePerDay)</td>
 				@if (User.IsInRole("Admin"))
 				{
-					<td>@(item.IsAvailable ? "Доступний" : "Недоступний")</td>
+					<td>
+						<form asp-action="ToggleAvailability" asp-route-id="@item.Id" method="post" class="d-inline">
+							<button type="submit" class="btn btn-warning btn-sm">
+								@(item.IsAvailable ? "Зробити недоступним" : "Зробити доступним")
+							</button>
+						</form>
+					</td>
 				}
+
 				<td>
 					@if (User.IsInRole("Admin"))
 					{

@@ -26,7 +26,7 @@ namespace Web
             {
                 var locales = new[] { "en-US", "uk-UA" };
 
-                options.SetDefaultCulture("en-US")
+                options.SetDefaultCulture("uk-UA")
                     .AddSupportedCultures(locales)
                     .AddSupportedUICultures(locales);
 
@@ -58,6 +58,8 @@ namespace Web
             builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<CarService>();
             builder.Services.AddScoped<OrderService>();
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -72,7 +74,7 @@ namespace Web
 
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Car/Index");
                 app.UseHsts();
             }
 
@@ -88,7 +90,7 @@ namespace Web
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{culture=en-US}/{controller=Car}/{action=Index}/{id?}");
+                pattern: "{culture=uk-UA}/{controller=Car}/{action=Index}/{id?}");
 
             app.Run();
         }

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Services;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly EmailSender _emailSender;
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
@@ -82,6 +84,7 @@ namespace Web.Controllers
             var user = await _userManager.GetUserAsync(User);
             var model = new EditProfileViewModel
             {
+                UserName=user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber
             };
@@ -96,6 +99,7 @@ namespace Web.Controllers
                 return View(model);
 
             var user = await _userManager.GetUserAsync(User);
+            user.UserName = model.UserName;
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
 
@@ -106,7 +110,8 @@ namespace Web.Controllers
             foreach (var error in result.Errors)
                 ModelState.AddModelError("", error.Description);
 
-            return View(model);
+            TempData["Success"] = "Профіль оновлено.";
+            return RedirectToAction("Profile");
         }
         #endregion
 
@@ -137,9 +142,11 @@ namespace Web.Controllers
 
         #region Забув пароль
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ForgotPassword() => View();
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -155,8 +162,10 @@ namespace Web.Controllers
             var callbackUrl = Url.Action("ResetPassword", "Account",
                 new { token, email = user.Email }, protocol: HttpContext.Request.Scheme);
 
-            // TODO: замінити на реальне надсилання листа
-            Console.WriteLine($"Reset link: {callbackUrl}");
+            await _emailSender.SendEmailAsync(
+                user.Email,
+                "Відновлення пароля",
+                $"<p>Перейдіть за <a href='{callbackUrl}'>посиланням</a>, щоб скинути пароль.</p>");
 
             return RedirectToAction("ForgotPasswordConfirmation");
         }
@@ -168,7 +177,7 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult ResetPassword(string token, string email)
         {
-            if (token == null || email == null) return BadRequest();
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token)) return BadRequest();
             return View(new ResetPasswordViewModel { Token = token, Email = email });
         }
 
@@ -181,8 +190,7 @@ namespace Web.Controllers
             if (user == null) return RedirectToAction("ResetPasswordConfirmation");
 
             var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
-            if (result.Succeeded)
-                return RedirectToAction("ResetPasswordConfirmation");
+            if (result.Succeeded) return RedirectToAction("ResetPasswordConfirmation");
 
             foreach (var error in result.Errors)
                 ModelState.AddModelError("", error.Description);
@@ -191,6 +199,16 @@ namespace Web.Controllers
         }
 
         public IActionResult ResetPasswordConfirmation() => View();
+        #endregion
+
+        #region Мій профіль
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+
+            return View(user);
+        }
         #endregion
     }
 }

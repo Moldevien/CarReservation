@@ -1,11 +1,11 @@
 ﻿@model Web.Models.Order.BookingViewModel
 @{
-    var car = ViewBag.Car as Domain.Entities.Car;
-    if (car == null)
-    {
-        <div class="alert alert-danger">Автомобіль не знайдено.</div>
-        return;
-    }
+	var car = ViewBag.Car as Domain.Entities.Car;
+	if (car == null)
+	{
+		<div class="alert alert-danger">Автомобіль не знайдено.</div>
+		return;
+	}
 }
 
 @using Microsoft.AspNetCore.Mvc.Localization
@@ -13,45 +13,44 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = Localizer["Title"];
+	ViewData["Title"] = Localizer["Title"];
 }
 
 <h1>@Localizer["Title"]</h1>
 
 <div>
-    <h2>@car.Brand @car.Model</h2>
+	<h2>@car.Brand @car.Model</h2>
 
-    <p><strong>Ціна за день:</strong> @car.PricePerDay грн</p>
-    <p><strong>Пасажири:</strong> @car.Passengers</p>
-    <p><strong>Паливо:</strong> @car.Gas</p>
-    <p><strong>Коробка:</strong> @car.Gear_box</p>
+	<p><strong>Ціна за день:</strong> @car.PricePerDay грн</p>
+	<p><strong>Пасажири:</strong> @car.Passengers</p>
+	<p><strong>Паливо:</strong> @car.Gas</p>
+	<p><strong>Коробка:</strong> @car.Gear_box</p>
 
-    @if (User.IsInRole("User"))
-    {
-        <form asp-action="Details" method="post" class="mt-4">
-            <input type="hidden" asp-for="CarId" />
+	@if (User.IsInRole("User"))
+	{
+		<form asp-action="Details" method="post" class="mt-4">
+			<input type="hidden" asp-for="CarId" />
 
-            <div class="form-group">
-                <label asp-for="StartDate"></label>
-                <input asp-for="StartDate" class="form-control" type="date" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
+			<div class="form-group">
+				<label asp-for="StartDate"></label>
+				<input asp-for="StartDate" class="form-control" type="date" />
+				<span asp-validation-for="StartDate" class="text-danger"></span>
+			</div>
 
-            <div class="form-group">
-                <label asp-for="EndDate"></label>
-                <input asp-for="EndDate" class="form-control" type="date" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
+			<div class="form-group">
+				<label asp-for="EndDate"></label>
+				<input asp-for="EndDate" class="form-control" type="date" />
+				<span asp-validation-for="EndDate" class="text-danger"></span>
+			</div>
 
-            <button type="submit" class="btn btn-success mt-2">Забронювати</button>
-        </form>
-    }
-    else
-    {
-        <div class="alert alert-info mt-4">Щоб забронювати авто, будь ласка, <a asp-controller="Account" asp-action="Login">увійдіть</a>.</div>
-    }
+			<button type="submit" class="btn btn-success mt-2">Забронювати</button>
+		</form>
+	}
+	else
+	{
+		<div class="alert alert-info mt-4">Щоб забронювати авто, будь ласка, <a asp-controller="Account" asp-action="Login">увійдіть</a>.</div>
+	}
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@car?.Id">@Localizer["Edit"]</a> |
-    <a asp-action="Index">@Localizer["Back"]</a>
+	<a asp-action="Index">@Localizer["Back"]</a>
 </div>

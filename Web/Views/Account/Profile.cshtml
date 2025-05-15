@@ -1,0 +1,10 @@
+﻿@using Domain.Entities
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
+<h2>Мій профіль</h2>
+
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Ім’я:</strong> @Model.UserName</p>
+<p><strong>Телефон:</strong> @Model.PhoneNumber</p>
+<p><strong>Роль:</strong> @(string.Join(", ", await UserManager.GetRolesAsync(Model)))</p>

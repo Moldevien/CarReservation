@@ -40,6 +40,18 @@
 								<a class="nav-link" asp-controller="Order" asp-action="MyOrders">Мої замовлення</a>
 							</li>
 						}
+						@if (User.Identity.IsAuthenticated)
+						{
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Account" asp-action="Profile">Мій кабінет</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Account" asp-action="EditProfile">Редагувати</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Account" asp-action="ChangePassword">Змінити пароль</a>
+							</li>
+						}
 
 					</ul>
 				</div>
